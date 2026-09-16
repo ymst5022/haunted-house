@@ -1,0 +1,12 @@
+{
+  "name": "おばけあそび",
+  "short_name": "おばけあそび",
+  "description": "QRコードで遊べる、おばけのミニゲーム。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#140f22",
+  "theme_color": "#140f22",
+  "lang": "ja"
+}

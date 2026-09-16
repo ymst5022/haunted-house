@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QRコードをつくる｜おばけあそび</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: #fff;
+    color: #222;
+    font-family: "Yu Gothic", "Hiragino Sans", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; }
+  label { display: block; margin-top: 20px; font-weight: 700; }
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #888;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  button {
+    margin-top: 12px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #b96b00;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .poster {
+    margin-top: 28px;
+    padding: 28px 20px;
+    border: 3px dashed #bbb;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .poster h2 { margin: 0 0 4px; font-size: 34px; }
+  .poster p  { margin: 0; font-size: 16px; }
+  #qr { display: inline-block; margin: 20px auto 12px; }
+  #qr img, #qr canvas { display: block; }
+  .caution { margin-top: 14px; font-size: 15px; font-weight: 700; color: #b30000; }
+  .hint { color: #555; font-size: 14px; }
+  @media print {
+    .no-print { display: none !important; }
+    .poster { border: none; margin-top: 0; }
+    body { padding: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="no-print">
+    <h1>QRコードをつくる</h1>
+    <p class="hint">
+      ゲームを公開したURL（<code>https://…</code>）を入れて「つくる」を押すと、
+      下に印刷用のポスターができます。ブラウザの印刷（Ctrl+P）でA4に印刷してください。<br>
+      QRは <strong>3cm角以上</strong>になるようにしてください。小さすぎると読み取れません。
+    </p>
+
+    <label for="url">ゲームのURL</label>
+    <input type="text" id="url" placeholder="https://ユーザー名.github.io/haunted-house/">
+
+    <label for="size">QRの大きさ（ピクセル）</label>
+    <input type="text" id="size" value="420">
+
+    <button id="make" type="button">つくる</button>
+  </div>
+
+  <div class="poster">
+    <h2>おばけあそび</h2>
+    <p>スマホのカメラで よみとってね</p>
+    <div id="qr"></div>
+    <p><strong>アプリのインストールは いりません</strong></p>
+    <p class="hint">むりょう／3つの ゲームから えらんで あそべます</p>
+    <p class="caution">あるきながらは あそばないでください</p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  var box = document.getElementById('qr');
+
+  function make() {
+    var url = document.getElementById('url').value.trim();
+    var size = parseInt(document.getElementById('size').value, 10) || 420;
+    box.innerHTML = '';
+    if (!url) { alert('URLを入れてください'); return; }
+    new QRCode(box, {
+      text: url,
+      width: size,
+      height: size,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+
+  document.getElementById('make').addEventListener('click', make);
+  document.getElementById('url').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') make();
+  });
+</script>
+</body>
+</html>
