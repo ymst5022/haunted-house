@@ -1,9 +1,9 @@
 /* こうかおん。音のファイルは つかわず、その場で 音を つくります（読み込みが ゼロ）。
-   はじめは オフ。待ち列で いきなり 音が 鳴らないようにするため。 */
+   はじめから オン。 */
 var Sound = (function () {
   'use strict';
 
-  var enabled = false;
+  var enabled = true;
   var ctx = null;
 
   function getContext() {
@@ -53,6 +53,11 @@ var Sound = (function () {
     /* カードを めくったときなどの ちいさな 音 */
     tick: function () {
       tone(440, 0.06, 'square');
+    },
+    /* カードが そろわなかったときの ざんねんな 音 */
+    miss: function () {
+      tone(300, 0.12, 'sawtooth');
+      tone(180, 0.16, 'sawtooth', 0.08);
     },
     start: function () {
       tone(520, 0.1, 'triangle');

@@ -1,5 +1,5 @@
 /* ゲーム1：おばけタッチ
-   出てきた おばけを タップして 消す。45びょう。
+   出てきた おばけを タップして 消す。30びょう。のこり 15びょうから だいはっせい。
 
    ---- ゲームの かきかた（ほかの ゲームを つくるときの おてほん） ----
    App.registerGame({
@@ -85,8 +85,8 @@ App.registerGame((function () {
     name: 'おばけタッチ',
     desc: 'でてきた おばけを タッチ！',
     symbol: '#ghost-shiro',
-    seconds: 45,
-    rushSeconds: 10,
+    seconds: 30,
+    rushSeconds: 15,
     ranks: [
       { min: 45, name: 'おばけマスター', symbol: '#ghost-kabocha' },
       { min: 25, name: 'おばけはかせ',   symbol: '#ghost-hinotama' },

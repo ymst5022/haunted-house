@@ -59,6 +59,7 @@ App.registerGame((function () {
       matched();
     } else {
       misses += 1;
+      Sound.miss();
       closeTimer = setTimeout(closeOpen, 900);
     }
   }
