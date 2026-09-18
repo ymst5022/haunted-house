@@ -5,7 +5,7 @@
    ★ゲームの中身を なおしたら、下の CACHE_NAME の v1 を v2、v3 …と
      ふやしてください。ふやさないと 古い画面が 表示されつづけます。 */
 
-var CACHE_NAME = 'obake-asobi-v6';
+var CACHE_NAME = 'obake-asobi-v7';
 
 var FILES = [
   './',

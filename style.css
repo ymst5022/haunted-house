@@ -399,7 +399,7 @@ body {
   gap: 12px;
   background: radial-gradient(circle at 50% 40%, #ff5d5d 0%, #b8102a 70%);
   pointer-events: none;          /* 出ている あいだも タップは ゲームに とどく */
-  animation: rush-flash 1.2s ease-out forwards;
+  animation: rush-flash 2s ease-out forwards;
 }
 .rush-flash[hidden] { display: none; }
 .rush-flash__ghosts { display: flex; gap: 8px; }
@@ -417,7 +417,7 @@ body {
   line-height: 1.15;
   text-align: center;
   text-shadow: 0 4px 0 #6d0014, 0 0 24px rgba(255, 255, 255, .6);
-  animation: rush-text 1.2s ease-out forwards;
+  animation: rush-text 2s ease-out forwards;
 }
 @keyframes rush-flash {
   0%   { opacity: 0; }
@@ -442,7 +442,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .float, .rank-art svg, .rush-banner, .rush-flash__ghosts svg { animation: none; }
-  .rush-flash { animation: rush-flash 1.2s linear forwards; }
+  .rush-flash { animation: rush-flash 2s linear forwards; }
   .rush-flash__text { animation: none; }
 }
 

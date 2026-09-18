@@ -175,7 +175,7 @@ var App = (function () {
     rushFlash.hidden = false;
     Sound.rush();
     buzz([60, 40, 60, 40, 120]);
-    rushFlashTimer = setTimeout(function () { rushFlash.hidden = true; }, 1200);
+    rushFlashTimer = setTimeout(function () { rushFlash.hidden = true; }, 2000);
   }
 
   /* ---------- ゲームを かたづける（けっかを 出さずに） ---------- */
