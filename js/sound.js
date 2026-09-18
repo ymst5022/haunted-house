@@ -59,6 +59,13 @@ var Sound = (function () {
       tone(300, 0.12, 'sawtooth');
       tone(180, 0.16, 'sawtooth', 0.08);
     },
+    /* 「だいはっせい」が はじまったときの けたたましい 音 */
+    rush: function () {
+      tone(440, 0.10, 'square');
+      tone(660, 0.10, 'square', 0.10);
+      tone(880, 0.10, 'square', 0.20);
+      tone(1100, 0.25, 'square', 0.30);
+    },
     start: function () {
       tone(520, 0.1, 'triangle');
       tone(780, 0.14, 'triangle', 0.12);

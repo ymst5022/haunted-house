@@ -387,8 +387,63 @@ body {
 .svg-sprite { position: absolute; width: 0; height: 0; }
 
 /* 動きを減らす設定の端末では、揺れるアニメーションを止める */
+/* だいはっせい 開始時の 全画面フラッシュ */
+.rush-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: radial-gradient(circle at 50% 40%, #ff5d5d 0%, #b8102a 70%);
+  pointer-events: none;          /* 出ている あいだも タップは ゲームに とどく */
+  animation: rush-flash 1.2s ease-out forwards;
+}
+.rush-flash[hidden] { display: none; }
+.rush-flash__ghosts { display: flex; gap: 8px; }
+.rush-flash__ghosts svg {
+  width: 84px; height: 84px;
+  animation: rush-bounce .4s ease-in-out infinite alternate;
+}
+.rush-flash__ghosts svg:nth-child(2) { width: 110px; height: 110px; animation-delay: .1s; }
+.rush-flash__ghosts svg:nth-child(3) { animation-delay: .2s; }
+.rush-flash__text {
+  margin: 0;
+  color: #fff;
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 4px 0 #6d0014, 0 0 24px rgba(255, 255, 255, .6);
+  animation: rush-text 1.2s ease-out forwards;
+}
+@keyframes rush-flash {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes rush-text {
+  0%   { transform: scale(.4) rotate(-6deg); }
+  15%  { transform: scale(1.15) rotate(2deg); }
+  25%  { transform: scale(1) rotate(0); }
+  100% { transform: scale(1.05); }
+}
+@keyframes rush-bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-14px); }
+}
+/* 大発生中は ゲーム画面の わくが 赤く 光る */
+.field.is-rush {
+  box-shadow: inset 0 0 0 3px #ff5d5d, 0 0 26px rgba(255, 93, 93, .55);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .float, .rank-art svg, .rush-banner { animation: none; }
+  .float, .rank-art svg, .rush-banner, .rush-flash__ghosts svg { animation: none; }
+  .rush-flash { animation: rush-flash 1.2s linear forwards; }
+  .rush-flash__text { animation: none; }
 }
 
 /* 横向きにしたときも崩れないように */

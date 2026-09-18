@@ -75,6 +75,16 @@
 
 </main>
 
+<!-- だいはっせい 開始時に 画面いっぱいに パッと出る演出（1秒ほどで消えます） -->
+<div id="rush-flash" class="rush-flash" hidden aria-hidden="true">
+  <div class="rush-flash__ghosts">
+    <svg viewBox="0 0 100 100"><use href="#ghost-shiro" xlink:href="#ghost-shiro"></use></svg>
+    <svg viewBox="0 0 100 100"><use href="#ghost-kabocha" xlink:href="#ghost-kabocha"></use></svg>
+    <svg viewBox="0 0 100 100"><use href="#ghost-hinotama" xlink:href="#ghost-hinotama"></use></svg>
+  </div>
+  <p class="rush-flash__text">おばけ<br>だいはっせい！</p>
+</div>
+
 <!-- おばけの絵（SVG）。ここに置いた絵をゲーム中に呼び出します -->
 <svg class="svg-sprite" aria-hidden="true" focusable="false">
   <defs>

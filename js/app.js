@@ -23,6 +23,7 @@ var App = (function () {
   var timeLeftEl  = document.getElementById('time-left');
   var timebarFill = document.getElementById('timebar-fill');
   var rushBanner  = document.getElementById('rush-banner');
+  var rushFlash   = document.getElementById('rush-flash');
   var resultGame  = document.getElementById('result-game');
   var resultScore = document.getElementById('result-score');
   var resultUnit  = document.getElementById('result-unit');
@@ -40,6 +41,7 @@ var App = (function () {
   var endTime = 0;
   var isPlaying = false;
   var tickTimer = null;
+  var rushFlashTimer = null;
 
   /* ---------- 画面の きりかえ ---------- */
   function showScreen(name) {
@@ -161,14 +163,27 @@ var App = (function () {
     if (ctx.isRush() && rushBanner.hidden) {
       rushBanner.hidden = false;
       timebarFill.classList.add('is-rush');
+      field.classList.add('is-rush');
+      showRushFlash();
     }
     if (remainMs <= 0) { endGame(); }
+  }
+
+  /* ---------- だいはっせい 開始の 全画面フラッシュ ---------- */
+  function showRushFlash() {
+    clearTimeout(rushFlashTimer);
+    rushFlash.hidden = false;
+    Sound.rush();
+    buzz([60, 40, 60, 40, 120]);
+    rushFlashTimer = setTimeout(function () { rushFlash.hidden = true; }, 1200);
   }
 
   /* ---------- ゲームを かたづける（けっかを 出さずに） ---------- */
   function stopGame() {
     isPlaying = false;
     clearInterval(tickTimer);
+    clearTimeout(rushFlashTimer);
+    rushFlash.hidden = true;
     if (current) { current.stop(); }
     // ゲームが のこした ものを ぜんぶ 消す（バナーだけ のこす）
     Array.prototype.slice.call(field.children).forEach(function (el) {
