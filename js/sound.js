@@ -27,15 +27,18 @@ var Sound = (function () {
     if (!enabled) return;
     var audio = getContext();
     if (!audio) return;
+    note(audio, freq, audio.currentTime + (delay || 0), duration, type, 0.25);
+  }
 
-    var start = audio.currentTime + (delay || 0);
+  /* start（音の時計で なんびょうめ）に 1つの 音を 鳴らす。volume は 0〜1 */
+  function note(audio, freq, start, duration, type, volume) {
     var osc = audio.createOscillator();
     var gain = audio.createGain();
 
     osc.type = type || 'sine';
     osc.frequency.setValueAtTime(freq, start);
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.25, start + 0.01);
+    gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
     osc.connect(gain);
@@ -44,7 +47,60 @@ var Sound = (function () {
     osc.stop(start + duration + 0.02);
   }
 
+  /* ===== BGM（ゲーム中に ながれる ぶきみな 曲） =====
+     8分音符 16こで 1まわり。null は おやすみ。数字は 音の高さ（69 = ラ） */
+  var BGM_MELODY = [69, null, 72, null, 71, null, 68, null, 69, null, 76, null, 74, 72, 71, null];
+  var BGM_BASS   = [45, 45, 41, 40];   // 4こ ごとに かわる ひくい音（ラ ラ ファ ミ）
+  var BGM_STEP_NORMAL = 0.22;          // 1こ ぶんの 長さ（びょう）
+  var BGM_STEP_FAST   = 0.14;          // だいはっせい中は はやく
+  var BGM_VOLUME      = 0.07;          // こうかおんより ちいさく
+
+  var bgmTimer = null;
+  var bgmStep = 0;
+  var bgmNextTime = 0;
+  var bgmFast = false;
+
+  function midiToFreq(n) { return 440 * Math.pow(2, (n - 69) / 12); }
+
+  /* 0.1びょう ごとに、すこし さきの ぶんまで 音を よやくしておく（音が とぎれないように） */
+  function bgmSchedule() {
+    var audio = ctx;
+    if (!audio) return;
+    if (bgmNextTime < audio.currentTime) bgmNextTime = audio.currentTime + 0.05;
+    while (bgmNextTime < audio.currentTime + 0.3) {
+      var len = bgmFast ? BGM_STEP_FAST : BGM_STEP_NORMAL;
+      var i = bgmStep % BGM_MELODY.length;
+      if (enabled) {
+        if (BGM_MELODY[i] !== null) {
+          note(audio, midiToFreq(BGM_MELODY[i]), bgmNextTime, len * 0.9, 'triangle', BGM_VOLUME);
+        }
+        if (i % 4 === 0) {
+          note(audio, midiToFreq(BGM_BASS[i / 4]), bgmNextTime, len * 3.5, 'sine', BGM_VOLUME * 1.6);
+        }
+      }
+      bgmStep++;
+      bgmNextTime += len;
+    }
+  }
+
   return {
+    /* BGMを はじめから ながす（画面を さわった ときに よぶこと） */
+    bgmStart: function () {
+      if (!getContext()) return;
+      clearInterval(bgmTimer);
+      bgmStep = 0;
+      bgmNextTime = 0;
+      bgmFast = false;
+      bgmSchedule();
+      bgmTimer = setInterval(bgmSchedule, 100);
+    },
+    bgmStop: function () {
+      clearInterval(bgmTimer);
+      bgmTimer = null;
+    },
+    /* だいはっせい中は テンポを はやく する */
+    bgmSetFast: function (value) { bgmFast = !!value; },
+
     isEnabled: function () { return enabled; },
     setEnabled: function (value) {
       enabled = !!value;
