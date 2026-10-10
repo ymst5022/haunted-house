@@ -10,10 +10,16 @@ var Sound = (function () {
     if (!ctx) {
       var AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
+      // iPhoneは マナーモードだと この音を 消してしまうので、
+      // 「音を ながすページです」と つたえて マナーモードでも 鳴るようにする（iOS 17 から）
+      if (navigator.audioSession) {
+        try { navigator.audioSession.type = 'playback'; } catch (e) { /* 使えない端末は そのまま */ }
+      }
       try { ctx = new AC(); } catch (e) { return null; }
     }
     // スマホは画面をさわるまで音を止めているので、都度おこす
-    if (ctx.state === 'suspended' && ctx.resume) { ctx.resume(); }
+    // （iPhoneは 電話や アプリの切りかえの あとに interrupted に なることがある）
+    if ((ctx.state === 'suspended' || ctx.state === 'interrupted') && ctx.resume) { ctx.resume(); }
     return ctx;
   }
 
