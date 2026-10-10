@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=794">
+<title>おばけやしき チラシ</title>
+<!--
+  おばけやしきの チラシ（A4たて）。
+  画像にするときは、README の「6. チラシを画像にする」の手順で Chrome から書き出します。
+  ・QRに入れるURLは、下の <script> の GAME_URL を書きかえます
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700;900&display=block" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2b2247;
+    --purple: #5a3c9a;
+    --purple-soft: #8b6cff;
+    --cream: #fffaf0;
+    --orange: #ffb03d;
+    --orange-dark: #b96b00;
+    --dim: #5b5470;
+    --red: #c8243f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #ddd; }
+  body { font-family: "Zen Maru Gothic", "Yu Gothic", sans-serif; color: var(--ink); }
+
+  .page {
+    position: relative;
+    width: 794px;
+    height: 1123px;               /* A4 たて（96dpi換算） */
+    margin: 0 auto;
+    overflow: hidden;
+    background: #2e2158;
+  }
+  .scene { position: absolute; inset: 0; width: 794px; height: 1123px; }
+
+  /* ===== ふきだし ===== */
+  .bubble {
+    position: absolute;
+    padding: 8px 16px;
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    background: #fff;
+    font-weight: 900;
+    font-size: 19px;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+  .bubble::after {
+    content: "";
+    position: absolute;
+    z-index: -1;                  /* しっぽが もじに かぶらないように */
+    width: 18px; height: 18px;
+    background: #fff;
+    border-right: 4px solid var(--ink);
+    border-bottom: 4px solid var(--ink);
+  }
+  .bubble--shiro { left: 24px; top: 294px; transform: rotate(-4deg); font-size: 18px; }
+  .bubble--shiro::after { left: 70px; bottom: -12px; transform: rotate(45deg); }
+  .bubble--kabocha { left: 566px; top: 438px; transform: rotate(4deg); font-size: 17px; }
+  .bubble--kabocha::after { left: 62px; bottom: -12px; transform: rotate(45deg); }
+
+  .tagline {
+    position: absolute;
+    left: 0; right: 0; top: 214px;
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-shadow: 0 3px 0 var(--ink), 0 0 14px rgba(43, 34, 71, .9);
+  }
+
+  /* ===== したの パネル（QR） ===== */
+  .panel {
+    position: absolute;
+    left: 22px; right: 22px; top: 606px; bottom: 22px;
+    padding: 42px 26px 16px;
+    border: 5px solid var(--ink);
+    border-radius: 34px;
+    background: var(--cream);
+    box-shadow: 0 10px 0 rgba(20, 12, 45, .55);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .panel__ribbon {
+    position: absolute;
+    left: 50%; top: -27px;
+    transform: translateX(-50%);
+    padding: 9px 30px 11px;
+    border: 5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--orange);
+    font-family: "Mochiy Pop One", sans-serif;
+    font-size: 23px;
+    white-space: nowrap;
+    box-shadow: 0 5px 0 var(--orange-dark);
+  }
+
+  .play { flex: 1; display: flex; gap: 24px; align-items: center; }
+
+  .qr-card {
+    position: relative;
+    flex: none;
+    width: 276px;
+    padding: 14px 14px 10px;
+    border: 4px dashed var(--purple-soft);
+    border-radius: 24px;
+    background: #fff;
+    text-align: center;
+  }
+  .qr { width: 240px; height: 240px; margin: 0 auto; }
+  .qr svg { display: block; width: 100%; height: 100%; }
+  .qr-card__label {
+    margin: 6px 0 0;
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1.35;
+  }
+  .qr-card__peek {
+    position: absolute;
+    width: 66px; height: 66px;
+    left: -30px; top: -38px;
+    transform: rotate(-16deg);
+  }
+
+  .games { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 11px; min-width: 0; }
+  .games__title {
+    margin: 2px 0 0;
+    font-family: "Mochiy Pop One", sans-serif;
+    font-size: 33px;
+    line-height: 1.1;
+    color: var(--purple);
+  }
+  .games__sub { margin: 0 0 2px; font-size: 15px; font-weight: 700; color: var(--dim); }
+  .game { display: flex; align-items: center; gap: 12px; }
+  .game__icon {
+    flex: none;
+    width: 58px; height: 58px;
+    padding: 6px;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    background: #241a3c;
+  }
+  .game__icon svg { display: block; width: 100%; height: 100%; }
+  .game__name { display: block; font-size: 21px; font-weight: 900; line-height: 1.2; }
+  .game__desc { display: block; font-size: 14px; font-weight: 700; color: var(--dim); }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .chip {
+    padding: 3px 11px;
+    border: 2px solid var(--orange-dark);
+    border-radius: 999px;
+    background: #ffe7c2;
+    color: #7a3f00;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .caution {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 14px;
+    border-radius: 16px;
+    background: #ffeef1;
+  }
+  .caution__mark {
+    flex: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 34px;
+    text-align: center;
+  }
+  .caution__main { margin: 0; font-size: 18px; font-weight: 900; color: var(--red); }
+  .caution__note { margin: 1px 0 0; font-size: 11.5px; font-weight: 500; line-height: 1.5; color: var(--dim); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== けしき（そら・つき・おやしき・おばけ） ===== -->
+  <svg class="scene" viewBox="0 0 794 1123" aria-hidden="true">
+    <defs>
+      <!-- ゲームと おなじ おばけの絵（index.html と同じもの） -->
+      <symbol id="ghost-shiro" viewBox="0 0 100 100">
+        <path d="M50 6c-20 0-34 15-34 36v42l9-9 9 9 9-9 9 9 9-9 9 9 9-9 5 5V42C84 21 70 6 50 6z"
+              fill="#f6f4ff" stroke="#2b2247" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="38" cy="42" rx="6" ry="8" fill="#2b2247"/>
+        <ellipse cx="62" cy="42" rx="6" ry="8" fill="#2b2247"/>
+        <path d="M42 62q8 9 16 0" fill="none" stroke="#2b2247" stroke-width="4" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="ghost-hinotama" viewBox="0 0 100 100">
+        <path d="M50 4c6 18 26 24 26 46 0 18-12 32-26 32S24 68 24 50C24 28 44 22 50 4z"
+              fill="#6fe3ff" stroke="#123a63" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M50 30c4 10 14 14 14 26 0 10-6 18-14 18s-14-8-14-18c0-12 10-16 14-26z" fill="#d6f8ff"/>
+        <circle cx="42" cy="54" r="4.5" fill="#123a63"/>
+        <circle cx="58" cy="54" r="4.5" fill="#123a63"/>
+        <path d="M44 68q6 6 12 0" fill="none" stroke="#123a63" stroke-width="3.5" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="ghost-kabocha" viewBox="0 0 100 100">
+        <path d="M50 22c-4-8-2-14 2-18" fill="none" stroke="#3f7a2f" stroke-width="7" stroke-linecap="round"/>
+        <ellipse cx="50" cy="58" rx="40" ry="34" fill="#ff9b3d" stroke="#7a3708" stroke-width="4"/>
+        <path d="M32 26c-8 16-8 48 0 64M68 26c8 16 8 48 0 64" fill="none" stroke="#7a3708" stroke-width="3" opacity=".6"/>
+        <path d="M30 48l14-8 4 14zM70 48l-14-8-4 14z" fill="#7a3708"/>
+        <path d="M28 68h44l-7 8-8-5-7 6-7-6-8 5z" fill="#7a3708"/>
+      </symbol>
+      <symbol id="ghost-koumori" viewBox="0 0 100 100">
+        <path d="M50 46C40 30 22 26 6 34c10 4 14 12 12 22 8-4 16-2 20 6 2-6 6-10 12-12 6 2 10 6 12 12 4-8 12-10 20-6-2-10 2-18 12-22-16-8-34-4-44 12z"
+              fill="#8b6cff" stroke="#2b2247" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="50" cy="56" rx="12" ry="15" fill="#6a4be0" stroke="#2b2247" stroke-width="4"/>
+        <path d="M42 40l3 8h-6zM58 40l-3 8h6z" fill="#6a4be0" stroke="#2b2247" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="45" cy="54" r="3" fill="#fff"/>
+        <circle cx="55" cy="54" r="3" fill="#fff"/>
+        <path d="M46 64q4 4 8 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- きらきら星 -->
+      <symbol id="star" viewBox="-10 -10 20 20">
+        <path d="M0-10Q1.6-1.6 10 0Q1.6 1.6 0 10Q-1.6 1.6-10 0Q-1.6-1.6 0-10z" fill="#fff3b0"/>
+      </symbol>
+
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0"   stop-color="#1f1647"/>
+        <stop offset=".22" stop-color="#2f2268"/>
+        <stop offset=".42" stop-color="#5a3d9e"/>
+        <stop offset=".52" stop-color="#9a68c8"/>
+      </linearGradient>
+      <radialGradient id="moonGlow">
+        <stop offset=".55" stop-color="#fff3b0" stop-opacity=".55"/>
+        <stop offset="1"   stop-color="#fff3b0" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="windowGlow">
+        <stop offset="0" stop-color="#ffd36b" stop-opacity=".8"/>
+        <stop offset="1" stop-color="#ffd36b" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
+        <feFlood flood-color="#ffffff" flood-opacity=".5" result="color"/>
+        <feComposite in="color" in2="blur" operator="in" result="glow"/>
+        <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- そら -->
+    <rect width="794" height="1123" fill="url(#sky)"/>
+
+    <!-- ほし -->
+    <g>
+      <use href="#star" x="40"  y="40"  width="22" height="22"/>
+      <use href="#star" x="740" y="34"  width="26" height="26"/>
+      <use href="#star" x="150" y="248" width="16" height="16"/>
+      <use href="#star" x="690" y="250" width="18" height="18"/>
+      <use href="#star" x="22"  y="196" width="14" height="14"/>
+      <use href="#star" x="760" y="180" width="14" height="14"/>
+      <use href="#star" x="610" y="330" width="16" height="16"/>
+      <use href="#star" x="236" y="372" width="14" height="14"/>
+      <use href="#star" x="372" y="22"  width="14" height="14"/>
+    </g>
+    <g fill="#fff3b0" opacity=".75">
+      <circle cx="96" cy="70" r="2.5"/><circle cx="290" cy="30" r="2"/><circle cx="520" cy="26" r="2.5"/>
+      <circle cx="660" cy="88" r="2"/><circle cx="30" cy="300" r="2"/><circle cx="770" cy="320" r="2.5"/>
+      <circle cx="560" cy="250" r="2"/><circle cx="210" cy="230" r="2"/><circle cx="740" cy="400" r="2"/>
+    </g>
+
+    <!-- おつきさま -->
+    <circle cx="397" cy="420" r="168" fill="url(#moonGlow)"/>
+    <circle cx="397" cy="420" r="122" fill="#fff1a8"/>
+    <circle cx="350" cy="352" r="14" fill="#f6df82"/>
+    <circle cx="452" cy="338" r="9" fill="#f6df82"/>
+
+    <!-- おか -->
+    <path d="M0 568C120 540 250 572 397 570S640 538 794 556V1123H0z" fill="#3e2c7c"/>
+    <path d="M0 596C160 580 300 600 430 598S680 578 794 590V1123H0z" fill="#2e2158"/>
+
+    <!-- おやしき -->
+    <g stroke="#2b2247" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+      <!-- まどの ひかり -->
+      <circle cx="397" cy="500" r="110" fill="url(#windowGlow)" stroke="none"/>
+      <!-- えんとつ -->
+      <path d="M452 372h26v52h-26z" fill="#6a4fb0"/>
+      <!-- ほんたい -->
+      <path d="M302 598L306 438L490 432L494 598z" fill="#7a5cc0"/>
+      <!-- やね -->
+      <path d="M280 446Q338 398 397 346Q454 396 514 440z" fill="#3f2d78"/>
+      <!-- やねうらの まど -->
+      <circle cx="397" cy="408" r="15" fill="#ffd36b"/>
+      <!-- まど（ひだり・みぎ） -->
+      <path d="M332 528v-38a20 20 0 0 1 40 0v38z" fill="#ffd36b"/>
+      <path d="M422 528v-38a20 20 0 0 1 40 0v38z" fill="#ffd36b"/>
+      <path d="M352 472v56M332 506h40M442 472v56M422 506h40" fill="none" stroke-width="4"/>
+      <!-- ドア -->
+      <path d="M376 598v-40a21 21 0 0 1 42 0v40z" fill="#c9773a"/>
+      <circle cx="408" cy="580" r="3" fill="#2b2247" stroke="none"/>
+      <!-- とう（ひだり） -->
+      <path d="M254 598L258 396L318 392L322 598z" fill="#8f72d6"/>
+      <path d="M244 404Q274 360 288 300Q312 352 334 400z" fill="#3f2d78"/>
+      <circle cx="288" cy="446" r="16" fill="#ffd36b"/>
+      <path d="M272 446h32M288 430v32" fill="none" stroke-width="4"/>
+      <!-- はた -->
+      <path d="M288 300V270" fill="none"/>
+      <path d="M288 272L312 280L288 288" fill="#ffb03d"/>
+    </g>
+    <!-- まどから のぞく ちいさな おばけ -->
+    <use href="#ghost-shiro" x="430" y="482" width="24" height="24"/>
+
+    <!-- こうもり -->
+    <use href="#ghost-koumori" x="456" y="276" width="70" height="70" transform="rotate(10 491 311)"/>
+    <use href="#ghost-koumori" x="200" y="284" width="56" height="56" transform="rotate(-12 228 312)"/>
+
+    <!-- しろおばけ（ひだり・おおきく） -->
+    <use href="#ghost-shiro" x="34" y="356" width="178" height="178" filter="url(#glow)" transform="rotate(-6 123 445)"/>
+    <!-- かぼちゃおばけ（みぎ・じめん） -->
+    <use href="#ghost-kabocha" x="574" y="482" width="122" height="122"/>
+    <use href="#ghost-kabocha" x="700" y="552" width="52" height="52"/>
+    <!-- ひのたま（みぎうえ） -->
+    <use href="#ghost-hinotama" x="664" y="358" width="104" height="104" filter="url(#glow)" transform="rotate(8 716 410)"/>
+
+    <!-- タイトル（下の script で 1もじずつ ならべます） -->
+    <g id="title" font-family="'Mochiy Pop One', sans-serif" font-size="106" text-anchor="middle"></g>
+
+    <!-- うえの リボン -->
+    <g transform="translate(397 52)">
+      <path d="M-170-24h340l-14 24 14 24h-340l14-24z" fill="#ffb03d" stroke="#2b2247" stroke-width="4" stroke-linejoin="round"/>
+      <text y="9" text-anchor="middle" font-family="'Zen Maru Gothic', sans-serif" font-weight="900" font-size="25" fill="#2b2247" letter-spacing="2">ちょっぴり どきどき！</text>
+    </g>
+  </svg>
+
+  <p class="tagline">かわいい おばけたちが まってるよ</p>
+  <div class="bubble bubble--shiro">いっしょに あそぼ〜！</div>
+  <div class="bubble bubble--kabocha">こわくないよ！</div>
+
+  <!-- ===== したの パネル ===== -->
+  <section class="panel">
+    <div class="panel__ribbon">ならんでいる あいだに あそべるよ！</div>
+
+    <div class="play">
+      <div class="qr-card">
+        <div id="qr" class="qr"></div>
+        <p class="qr-card__label">スマホの カメラで<br>よみとってね</p>
+        <svg class="qr-card__peek" viewBox="0 0 100 100" aria-hidden="true"><use href="#ghost-hinotama"/></svg>
+      </div>
+
+      <div class="games">
+        <h2 class="games__title">おばけあそび</h2>
+        <p class="games__sub">3つの ゲームから えらんで あそべるよ</p>
+        <div class="game">
+          <span class="game__icon"><svg viewBox="0 0 100 100"><use href="#ghost-shiro"/></svg></span>
+          <span><span class="game__name">おばけタッチ</span><span class="game__desc">でてきた おばけを タッチ！</span></span>
+        </div>
+        <div class="game">
+          <span class="game__icon"><svg viewBox="0 0 100 100"><use href="#ghost-kabocha"/></svg></span>
+          <span><span class="game__name">なかまはずれ</span><span class="game__desc">ひとりだけ ちがう おばけは だれ？</span></span>
+        </div>
+        <div class="game">
+          <span class="game__icon"><svg viewBox="0 0 100 100"><use href="#ghost-koumori"/></svg></span>
+          <span><span class="game__name">おばけあわせ</span><span class="game__desc">おなじ おばけの カードを そろえよう</span></span>
+        </div>
+        <div class="chips">
+          <span class="chip">むりょう</span>
+          <span class="chip">アプリ いらない</span>
+          <span class="chip">1かい 30びょう〜1ぷん</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caution">
+      <span class="caution__mark" aria-hidden="true">!</span>
+      <div>
+        <p class="caution__main">あるきながらは あそばないでね</p>
+        <p class="caution__note">保護者の方へ：アプリのインストール・登録は不要、無料です。個人情報は集めません。</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+  /* ===== ここを かえると チラシの なかみが かわります ===== */
+  var GAME_URL = 'https://ymst5022.github.io/haunted-house/';
+
+  /* QRコード（くっきり印刷できるよう SVG で つくる） */
+  var qr = qrcode(0, 'M');
+  qr.addData(GAME_URL);
+  qr.make();
+  document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 8, margin: 4, scalable: true });
+
+  /* タイトル「おばけやしき」を 1もじずつ ゆらして ならべる */
+  (function () {
+    var NS = 'http://www.w3.org/2000/svg';
+    var chars = ['お', 'ば', 'け', 'や', 'し', 'き'];
+    var ys    = [178, 168, 180, 170, 180, 168];
+    var tilts = [-7, 4, -3, 5, -4, 7];
+    var title = document.getElementById('title');
+    [['#ff9b3d', '#ff9b3d', 18, 7], ['#fff7dc', '#2b2247', 14, 0]].forEach(function (layer) {
+      chars.forEach(function (ch, i) {
+        var t = document.createElementNS(NS, 'text');
+        var x = 397 + (i - 2.5) * 114;
+        t.setAttribute('transform', 'translate(' + x + ' ' + (ys[i] + layer[3]) + ') rotate(' + tilts[i] + ')');
+        t.setAttribute('fill', layer[0]);
+        t.setAttribute('stroke', layer[1]);
+        t.setAttribute('stroke-width', layer[2]);
+        t.setAttribute('stroke-linejoin', 'round');
+        t.setAttribute('paint-order', 'stroke');
+        t.textContent = ch;
+        title.appendChild(t);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

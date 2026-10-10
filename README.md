@@ -72,6 +72,8 @@ js/sound.js         効果音（音声ファイル不要）
 js/storage.js       ゲームごとの最高得点の保存
 sw.js               オフライン対応
 tools/qr.html       QRポスター作成ページ
+tools/flyer.html    おばけやしきのチラシ（画像の元）
+tools/flyer.png     書き出したチラシ画像（A4・約300dpi）
 ```
 
 ### 5. ゲームを調整する・増やす
@@ -84,6 +86,21 @@ tools/qr.html       QRポスター作成ページ
 
 > **公開後にファイルを直したときは、`sw.js` の `CACHE_NAME` の `v7` を `v8` に増やしてください。**
 > 増やさないと、一度アクセスした人のスマホに古い画面が表示され続けます。
+
+### 6. チラシを画像にする
+
+`tools/flyer.png` が印刷用のチラシ画像（A4たて）です。中身を変えたいときは:
+
+1. QRのURLを変えるときは、`tools/flyer.html` の末尾にある `GAME_URL` を書きかえる
+2. このフォルダで PowerShell を開き、次を実行する（インターネット接続が必要）
+
+```
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new --hide-scrollbars --force-device-scale-factor=3.125 --window-size=794,1123 --virtual-time-budget=20000 --screenshot="$PWD\tools\flyer.png" "$PWD\tools\flyer.html" | Out-Null
+```
+
+（最後の `| Out-Null` は、画像ができあがるまで待つための指定です。赤い ERROR 行が出ても、`bytes written to file` と出ていれば成功です）
+
+3. できた `tools/flyer.png` を開き、スマホのカメラでQRが読めるか確かめる
 
 ---
 
