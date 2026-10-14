@@ -328,6 +328,22 @@ body {
   max-width: 340px;
   margin: 0 auto;
 }
+/* 「ステージ 2 / 3」「クリア！」の ひょうじ */
+.stage-banner {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #140f22;
+  font-size: 28px;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: ghost-in .35s ease-out;
+}
 .card {
   padding: 0;
   border: none;
