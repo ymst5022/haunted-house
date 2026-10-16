@@ -149,6 +149,7 @@ var App = (function () {
 
     showScreen('game');
     Sound.start();
+    Sound.bgmStart();
     game.start(ctx);
   }
 
@@ -174,6 +175,7 @@ var App = (function () {
     clearTimeout(rushFlashTimer);
     rushFlash.hidden = false;
     Sound.rush();
+    Sound.bgmSetFast(true);
     buzz([60, 40, 60, 40, 120]);
     rushFlashTimer = setTimeout(function () { rushFlash.hidden = true; }, 2000);
   }
@@ -183,6 +185,7 @@ var App = (function () {
     isPlaying = false;
     clearInterval(tickTimer);
     clearTimeout(rushFlashTimer);
+    Sound.bgmStop();
     rushFlash.hidden = true;
     if (current) { current.stop(); }
     // ゲームが のこした ものを ぜんぶ 消す（バナーだけ のこす）
